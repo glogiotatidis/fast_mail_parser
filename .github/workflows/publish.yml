@@ -38,11 +38,6 @@ jobs:
         name: Build
         run: docker run --rm -v ${PWD}:/io konstin2/maturin build --release --strip
 
-      - name: Publish
-        env:
-          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-        run: |
-          pip install twine
-          twine check target/wheels/*
-          twine upload target/wheels/* --skip-existing
+      - uses: actions/upload-artifact@v3
+        with:
+          path: ./target/wheels/*.whl
