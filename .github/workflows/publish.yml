@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ "windows-2019", "macOS-12", "ubuntu-latest" ]
+        os: [ "ubuntu-latest" ]
 
     steps:
       - uses: actions/checkout@v2
@@ -27,18 +27,13 @@ jobs:
         with:
           python-version: '3.x'
 
-      - if: "${{ matrix.os != 'ubuntu-latest' }}"
-        name: Build
-        uses: messense/maturin-action@v1
+      - name: Build wheels - x86_64
+        uses: PyO3/maturin-action@v1
         with:
-          maturin-version: 0.12.18
-          command: build
-          args: --release --strip
-
-      - if: "${{ matrix.os == 'ubuntu-latest' }}"
-        name: Build
-        run: docker run --rm -v ${PWD}:/io konstin2/maturin build --release --strip
+          target: x86_64
+          args: --release --out dist --sdist 
 
       - uses: actions/upload-artifact@v3
         with:
           path: ./target/wheels/*.whl
+
