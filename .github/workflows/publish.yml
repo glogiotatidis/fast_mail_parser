@@ -32,7 +32,7 @@ jobs:
         uses: PyO3/maturin-action@v1
         with:
           target: x86_64
-          args: --release --sdist -m Cargo.toml
+          args: --release -m Cargo.toml
           
       - uses: actions/upload-artifact@v3
         with:
